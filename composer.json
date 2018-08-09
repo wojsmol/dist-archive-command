@@ -18,7 +18,8 @@
     "require-dev": {
         "behat/behat": "~2.5",
         "wp-cli/wp-cli-tests": "^2",
-        "wp-cli/scaffold-command": "^2"
+        "wp-cli/scaffold-command": "^2",
+        "wp-cli/extension-command": "^2"
     },
     "extra": {
         "commands": [
@@ -34,6 +35,7 @@
         ]
     },
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "scripts": {
         "behat": "run-behat-tests",
         "lint": "run-linter-tests",
