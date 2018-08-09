@@ -4,6 +4,8 @@ Feature: Generate a distribution archive of a project
     Given a WP install
 
     When I run `wp scaffold plugin hello-world`
+	And I run `pwd`
+	And I run `ls -la'
     Then the wp-content/plugins/hello-world directory should exist
     And the wp-content/plugins/hello-world/hello-world.php file should exist
     And the wp-content/plugins/hello-world/.travis.yml file should exist
