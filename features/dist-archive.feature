@@ -46,7 +46,7 @@ Feature: Generate a distribution archive of a project
     When I run `wp plugin delete hello-world`
     Then the {PLUGIN_DIR}/hello-world directory should not exist
 
-    When I run `cd {PLUGIN_DIR}/ && tar -zxvf hello-world.0.1.0.tar.gz && cd {TRAVIS_BUILD_DIR)/`
+    When I run `cd {PLUGIN_DIR}/ && tar -zxvf hello-world.0.1.0.tar.gz && cd {PLUGIN_DIR}/../../`
     Then the {PLUGIN_DIR}/hello-world directory should exist
     And the {PLUGIN_DIR}/hello-world/hello-world.php file should exist
     And the {PLUGIN_DIR}/hello-world/.travis.yml file should not exist
