@@ -12,10 +12,8 @@ Feature: Generate a distribution archive of a project
     And the {PLUGIN_DIR}/hello-world/bin directory should exist
 
     When I run `wp dist-archive {PLUGIN_DIR}/hello-world`
-    Then STDOUT should be:
-      """
-      Success: Created hello-world.0.1.0.zip
-      """
+	And I run `ls -la {PLUGIN_DIR}/hello-world`
+    Then STDOUT should be empty
     And STDERR should be empty
     And the {PLUGIN_DIR}/hello-world.0.1.0.zip file should exist
 
