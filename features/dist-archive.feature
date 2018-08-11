@@ -11,7 +11,7 @@ Feature: Generate a distribution archive of a project
     And the {PLUGIN_DIR}/hello-world/.travis.yml file should exist
     And the {PLUGIN_DIR}/hello-world/bin directory should exist
 
-    When I run `wp dist-archive wp-content/plugins/hello-world`
+    When I run `wp dist-archive {PLUGIN_DIR}/hello-world`
     Then STDOUT should be:
       """
       Success: Created hello-world.0.1.0.zip
@@ -22,7 +22,7 @@ Feature: Generate a distribution archive of a project
     When I run `wp plugin delete hello-world`
     Then the {PLUGIN_DIR}/hello-world directory should not exist
 
-    When I run `wp plugin install wp-content/plugins/hello-world.0.1.0.zip`
+    When I run `wp plugin install {PLUGIN_DIR}/hello-world.0.1.0.zip`
     Then the {PLUGIN_DIR}/hello-world directory should exist
     And the {PLUGIN_DIR}/hello-world/hello-world.php file should exist
     And the {PLUGIN_DIR}/hello-world/.travis.yml file should not exist
@@ -37,7 +37,7 @@ Feature: Generate a distribution archive of a project
     And the {PLUGIN_DIR}/hello-world/.travis.yml file should exist
     And the {PLUGIN_DIR}/hello-world/bin directory should exist
 
-    When I run `wp dist-archive wp-content/plugins/hello-world --format=targz`
+    When I run `wp dist-archive {PLUGIN_DIR}/hello-world --format=targz`
     Then STDOUT should be:
       """
       Success: Created hello-world.0.1.0.tar.gz
@@ -56,6 +56,8 @@ Feature: Generate a distribution archive of a project
 
   Scenario: Generate a ZIP archive to a custom path
     Given a WP install
+    When I run `wp plugin path`
+    Then save STDOUT as {PLUGIN_DIR}
 
     When I run `wp scaffold plugin hello-world`
     Then the {PLUGIN_DIR}/hello-world directory should exist
