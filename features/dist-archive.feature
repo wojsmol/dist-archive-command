@@ -2,12 +2,14 @@ Feature: Generate a distribution archive of a project
 
   Scenario: Generates a ZIP archive by default
     Given a WP install
+    When I run `wp plugin path`
+    Then save STDOUT as {PLUGIN_DIR}
 
     When I run `wp scaffold plugin hello-world`
-    Then the wp-content/plugins/hello-world directory should exist
-    And the wp-content/plugins/hello-world/hello-world.php file should exist
-    And the wp-content/plugins/hello-world/.travis.yml file should exist
-    And the wp-content/plugins/hello-world/bin directory should exist
+    Then the {PLUGIN_DIR}/hello-world directory should exist
+    And the {PLUGIN_DIR}/hello-world/hello-world.php file should exist
+    And the {PLUGIN_DIR}/hello-world/.travis.yml file should exist
+    And the {PLUGIN_DIR}/hello-world/bin directory should exist
 
     When I run `wp dist-archive wp-content/plugins/hello-world`
     Then STDOUT should be:
@@ -15,25 +17,25 @@ Feature: Generate a distribution archive of a project
       Success: Created hello-world.0.1.0.zip
       """
     And STDERR should be empty
-    And the wp-content/plugins/hello-world.0.1.0.zip file should exist
+    And the {PLUGIN_DIR}/hello-world.0.1.0.zip file should exist
 
     When I run `wp plugin delete hello-world`
-    Then the wp-content/plugins/hello-world directory should not exist
+    Then the {PLUGIN_DIR}/hello-world directory should not exist
 
     When I run `wp plugin install wp-content/plugins/hello-world.0.1.0.zip`
-    Then the wp-content/plugins/hello-world directory should exist
-    And the wp-content/plugins/hello-world/hello-world.php file should exist
-    And the wp-content/plugins/hello-world/.travis.yml file should not exist
-    And the wp-content/plugins/hello-world/bin directory should not exist
+    Then the {PLUGIN_DIR}/hello-world directory should exist
+    And the {PLUGIN_DIR}/hello-world/hello-world.php file should exist
+    And the {PLUGIN_DIR}/hello-world/.travis.yml file should not exist
+    And the {PLUGIN_DIR}/hello-world/bin directory should not exist
 
   Scenario: Generates a tarball archive with a flag
     Given a WP install
 
     When I run `wp scaffold plugin hello-world`
-    Then the wp-content/plugins/hello-world directory should exist
-    And the wp-content/plugins/hello-world/hello-world.php file should exist
-    And the wp-content/plugins/hello-world/.travis.yml file should exist
-    And the wp-content/plugins/hello-world/bin directory should exist
+    Then the {PLUGIN_DIR}/hello-world directory should exist
+    And the {PLUGIN_DIR}/hello-world/hello-world.php file should exist
+    And the {PLUGIN_DIR}/hello-world/.travis.yml file should exist
+    And the {PLUGIN_DIR}/hello-world/bin directory should exist
 
     When I run `wp dist-archive wp-content/plugins/hello-world --format=targz`
     Then STDOUT should be:
@@ -41,33 +43,33 @@ Feature: Generate a distribution archive of a project
       Success: Created hello-world.0.1.0.tar.gz
       """
     And STDERR should be empty
-    And the wp-content/plugins/hello-world.0.1.0.tar.gz file should exist
+    And the {PLUGIN_DIR}/hello-world.0.1.0.tar.gz file should exist
 
     When I run `wp plugin delete hello-world`
-    Then the wp-content/plugins/hello-world directory should not exist
+    Then the {PLUGIN_DIR}/hello-world directory should not exist
 
-    When I run `cd wp-content/plugins/ && tar -zxvf hello-world.0.1.0.tar.gz && cd {TRAVIS_BUILD_DIR)`
-    Then the wp-content/plugins/hello-world directory should exist
-    And the wp-content/plugins/hello-world/hello-world.php file should exist
-    And the wp-content/plugins/hello-world/.travis.yml file should not exist
-    And the wp-content/plugins/hello-world/bin directory should not exist
+    When I run `cd {PLUGIN_DIR}/ && tar -zxvf hello-world.0.1.0.tar.gz && cd {TRAVIS_BUILD_DIR)/`
+    Then the {PLUGIN_DIR}/hello-world directory should exist
+    And the {PLUGIN_DIR}/hello-world/hello-world.php file should exist
+    And the {PLUGIN_DIR}/hello-world/.travis.yml file should not exist
+    And the {PLUGIN_DIR}/hello-world/bin directory should not exist
 
   Scenario: Generate a ZIP archive to a custom path
     Given a WP install
 
     When I run `wp scaffold plugin hello-world`
-    Then the wp-content/plugins/hello-world directory should exist
-    And the wp-content/plugins/hello-world/hello-world.php file should exist
-    And the wp-content/plugins/hello-world/.travis.yml file should exist
-    And the wp-content/plugins/hello-world/bin directory should exist
+    Then the {PLUGIN_DIR}/hello-world directory should exist
+    And the {PLUGIN_DIR}/hello-world/hello-world.php file should exist
+    And the {PLUGIN_DIR}/hello-world/.travis.yml file should exist
+    And the {PLUGIN_DIR}/hello-world/bin directory should exist
 
-    When I run `wp dist-archive wp-content/plugins/hello-world hello-world.zip`
+    When I run `wp dist-archive {PLUGIN_DIR}/hello-world hello-world.zip`
     Then STDOUT should be:
       """
       Success: Created hello-world.zip
       """
     And the hello-world.zip file should exist
-    And the wp-content/plugins/hello-world.0.1.0.zip file should not exist
+    And the {PLUGIN_DIR}/hello-world.0.1.0.zip file should not exist
 
   Scenario: Generate a ZIP archive using version number in composer.json
     Given an empty directory
